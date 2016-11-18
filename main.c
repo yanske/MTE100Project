@@ -72,6 +72,7 @@ void shootBall(float time)
 }
 */
 
+
 bool checkStop(bool shotsReached)
 {
 	const int MAX_RANGE = 50;

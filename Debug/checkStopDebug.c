@@ -9,6 +9,7 @@ bool checkStop(bool shotsReached, int range)
 
 task main()
 {
+	SensorType[S1] = sensorSONAR;
 	if(checkStop(false, 50))
 	{
 		displayString(0, "Found.");
