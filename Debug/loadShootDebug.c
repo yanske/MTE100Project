@@ -1,5 +1,41 @@
 //Debugging for shooting and loading mechanism
 
+void buttonPress()
+{
+	while(nNxtButtonPressed==-1){}
+	while(nNxtButtonPressed!=-1){}
+}
+
+bool buttonPressed()
+{
+	if(nNxtButtonPressed!=-1)
+		return true;
+	else 
+		return false;
+}
+
+void modifiedShootBall(float time, int power, int pullBackValue, int i)
+{
+	const int PULL_BACK = pullBackValue;
+	time1[T1] = 0;
+	nMotorEncoder[motorA] = 0;
+	motor[motorA] = 40;
+
+	while(nMotorEncoder[motorA]<PULL_BACK){
+		if(buttonPressed())
+		{
+			displayString(i,"Cnt: %d", nMotorEncoder[motorA]);
+		}
+	}
+	motor[motorA] = 0;
+
+	while(time1[T1]<time
+	motor[motorA] = 40;
+
+	while(nMotorEncoder[motorA]<360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
+	motor[motorA] = 0;
+}
+
 void shootBall(float time, int pullBackValue)
 {
 	const int PULL_BACK = pullBackValue;
@@ -10,7 +46,8 @@ void shootBall(float time, int pullBackValue)
 	while(nMotorEncoder[motorA]<PULL_BACK){}
 	motor[motorA] = 0;
 
-	while(time1[T1]<time){}
+	loadBall(20); //edit to appropriate power
+	while(time1[T1]< time){}
 	motor[motorA] = 40;
 
 	while(nMotorEncoder[motorA]<360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
@@ -20,15 +57,12 @@ void shootBall(float time, int pullBackValue)
 void loadBall(int power)
 {
 	nMotorEncoder[motorA] = 0;
-	while (nMotorEncoder < 360)
-	{
-		motor[motorA] = power;
-	}
+	motor[motorA] = power;
+	while (nMotorEncoder < 360){}
 	motor[motorA] = 0;
-	
 }
 
-float debugLoadBall(int power)
+float returnLoadTime(int power)
 {
 	/*
 	Purpose: find appropraite power for ball loading motor
@@ -38,12 +72,38 @@ float debugLoadBall(int power)
 	return time1[T1] = 0;
 }
 
+void testingLoading()
+{
+	displayString(0, "P%d, T%f", 20, returnLoadTime(20));
+	buttonPress();
+	displayString(0, "P%d, T%f", 30, returnLoadTime(30));
+	buttonPress();
+	displayString(0, "P%d, T%f", 40, returnLoadTime(40));
+	buttonPress();
+	displayString(0, "P%d, T%f", 50, returnLoadTime(50));
+	buttonPress();
+	eraseDisplay();
+}
+
+int findENCShooting()
+{
+	//find correct encoder count
+	int cnt = 0; 
+	for(int i = 0, i<3; i++)
+	{
+		cnt += modifiedShootBall(0, 5, 150, i);
+		buttonPress();
+	}
+	eraseDisplay();
+	return cnt/3;
+}
 
 int main()
 {
-	displayString(0, "P%d, T%f", 20, debugLoadBall(20));
-	displayString(0, "P%d, T%f", 30, debugLoadBall(30));
-	displayString(0, "P%d, T%f", 40, debugLoadBall(40));
-	displayString(0, "P%d, T%f", 50, debugLoadBall(50));
+	testingLoading();
+	int PB = findENCShooting();
+
+	//combined function
+	shootBall(0, PB);
 
 }
