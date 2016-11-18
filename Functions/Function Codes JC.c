@@ -1,7 +1,8 @@
 // Rotate Function
-void rotate(bool left, float time)
+void rotate(bool left, float time, int encoder)
 {
-	float halfTime = time / 2, randomTime = 0, power = 5;
+	float halfTime = time / 2, randomTime = 0;
+	int power = 5;
 	
 	if(left)
 		power = 5;
@@ -11,16 +12,22 @@ void rotate(bool left, float time)
 	
 	if(time < 0) // User setting location manually
 	{
-		motor[motorA] = power; // Need to check if this rotates left or right
+		motor[motorB] = power; // Need to check if this rotates left or right
 		wait1MSec(100);
 	}
 	
-	else
+	else	// Randomized
 	{
-		randomTime = random[halfTime]; // Select random time between 0 and halfTime
-		motor[motorA] = power;
-		wait1MSec(randomTime);
+		randomTime = random[halfTime];	// Select random time between 0 and halfTime
+		time[T1] = 0;					// Reset timer
+		motor[motorB] = power;			// Begin moving shooting mechanism
+		
+		while(fabs(nMotorEncoder[motorB]) < fabs(encoder) && time[T1] < randomTime)
+		{
+		}
 	}
+	
+	motor[motorB] = 0;
 }
 
 //Touch Sensor Timer Function
