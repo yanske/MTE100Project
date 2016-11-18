@@ -1,0 +1,11 @@
+bool displayData(float time, int shotIndex, int total)
+{
+	bool shotsRemaining = 0;
+	displayString(1, "Frequency: 1 ball/%.2fs, time/1000);
+	displayString(2, "Balls shot: %d", shotIndex);
+	displayString(3, "Remaining shots: %d", total - shotIndex;
+	if(total - shotIndex > 0)
+		shotsRemaining = 1;
+
+	return shotsRemaining;
+}
