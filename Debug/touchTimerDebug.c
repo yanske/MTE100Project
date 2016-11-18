@@ -24,3 +24,9 @@ float touchTimer()
 	
 	return recordedTime;
 }
+
+task main()
+{
+	Sensor[S1] = sensorTouch;
+	touchTimer();
+}
