@@ -19,7 +19,7 @@ int modifiedShootBall(float time, int power, int pullBackValue, int i)
 	const int PULL_BACK = pullBackValue;
 	time1[T1] = 0;
 	nMotorEncoder[motorA] = 0;
-	motor[motorA] = 40;
+	motor[motorA] = power;
 	int cnt;
 
 	while(nMotorEncoder[motorA]<PULL_BACK){
@@ -32,7 +32,7 @@ int modifiedShootBall(float time, int power, int pullBackValue, int i)
 	motor[motorA] = 0;
 
 	while(time1[T1]<time){}
-	motor[motorA] = 40;
+	motor[motorA] = power;
 
 	while(nMotorEncoder[motorA]<360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
 	motor[motorA] = 0;
@@ -41,27 +41,28 @@ int modifiedShootBall(float time, int power, int pullBackValue, int i)
 
 void loadBall(int power)
 {
-	nMotorEncoder[motorA] = 0;
-	motor[motorA] = power;
-	while (nMotorEncoder[motorA] < 360){}
-	motor[motorA] = 0;
+	nMotorEncoder[motorC] = 0;
+	motor[motorC] = power;
+	while (nMotorEncoder[motorC] > -360){}
+	motor[motorC] = 0;
 }
 
-void shootBall(float time, int pullBackValue)
+void shootBall(float time, int pullBackValue, int power)
 {
 	const int PULL_BACK = pullBackValue;
 	time1[T1] = 0;
 	nMotorEncoder[motorA] = 0;
-	motor[motorA] = 40;
+	motor[motorA] = power;
 
-	while(nMotorEncoder[motorA]<PULL_BACK){}
+	while(nMotorEncoder[motorA]>PULL_BACK){}
 	motor[motorA] = 0;
 
-	loadBall(20); //edit to appropriate power
-	while(time1[T1]< time){}
-	motor[motorA] = 40;
+	loadBall(-20); //edit to appropriate power
+	//while(time1[T1]< time){}
+	buttonPress();
+	motor[motorA] = power;
 
-	while(nMotorEncoder[motorA]<360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
+	while(nMotorEncoder[motorA]>-360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
 	motor[motorA] = 0;
 }
 
@@ -77,13 +78,13 @@ float returnLoadTime(int power)
 
 void testingLoading()
 {
-	displayString(0, "P%d, T%f", 20, returnLoadTime(20));
+	displayString(0, "P%d, T%f", -20, returnLoadTime(-20));
 	buttonPress();
-	displayString(0, "P%d, T%f", 30, returnLoadTime(30));
+	displayString(0, "P%d, T%f", -30, returnLoadTime(-30));
 	buttonPress();
-	displayString(0, "P%d, T%f", 40, returnLoadTime(40));
+	displayString(0, "P%d, T%f", -40, returnLoadTime(-40));
 	buttonPress();
-	displayString(0, "P%d, T%f", 50, returnLoadTime(50));
+	displayString(0, "P%d, T%f", -50, returnLoadTime(-50));
 	buttonPress();
 	eraseDisplay();
 }
@@ -94,7 +95,7 @@ int findENCShooting()
 	int cnt = 0;
 	for(int i = 0; i<3; i++)
 	{
-		cnt += modifiedShootBall(0, 5, 150, i);
+		cnt += modifiedShootBall(0, -10, 150, i);
 		buttonPress();
 	}
 	eraseDisplay();
@@ -103,10 +104,14 @@ int findENCShooting()
 
 task main()
 {
-	testingLoading();
-	int PB = findENCShooting();
+	//testingLoading();
+	//using loading power of -20;
 
+	//int PB = findENCShooting();
+	//displayString(0,"%d", PB);
+	shootBall(0, -170, -60);
+	buttonPress();
 	//combined function
-	shootBall(0, PB);
+	//shootBall(0, PB, 20);
 
 }
