@@ -18,10 +18,10 @@ void rotate(bool left, float time, int encoder)
 	else	// Randomized
 	{
 		randomTime = halfTime * (3 / 4);	// Select random time between 0 and halfTime
-		time[T1] = 0;					// Reset timer
+		time1[T1] = 0;					// Reset timer
 		motor[motorB] = power;			// Begin moving shooting mechanism
 		
-		while(fabs(nMotorEncoder[motorB]) < fabs(encoder) && time[T1] < randomTime)
+		while(fabs(nMotorEncoder[motorB]) < fabs(encoder) && time1[T1] < randomTime)
 		{
 		}
 	}
