@@ -10,29 +10,40 @@ bool buttonPressed()
 {
 	if(nNxtButtonPressed!=-1)
 		return true;
-	else 
+	else
 		return false;
 }
 
-void modifiedShootBall(float time, int power, int pullBackValue, int i)
+int modifiedShootBall(float time, int power, int pullBackValue, int i)
 {
 	const int PULL_BACK = pullBackValue;
 	time1[T1] = 0;
 	nMotorEncoder[motorA] = 0;
 	motor[motorA] = 40;
+	int cnt;
 
 	while(nMotorEncoder[motorA]<PULL_BACK){
 		if(buttonPressed())
 		{
 			displayString(i,"Cnt: %d", nMotorEncoder[motorA]);
+			cnt = nMotorEncoder[motorA];
 		}
 	}
 	motor[motorA] = 0;
 
-	while(time1[T1]<time
+	while(time1[T1]<time){}
 	motor[motorA] = 40;
 
 	while(nMotorEncoder[motorA]<360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
+	motor[motorA] = 0;
+	return cnt;
+}
+
+void loadBall(int power)
+{
+	nMotorEncoder[motorA] = 0;
+	motor[motorA] = power;
+	while (nMotorEncoder[motorA] < 360){}
 	motor[motorA] = 0;
 }
 
@@ -54,14 +65,6 @@ void shootBall(float time, int pullBackValue)
 	motor[motorA] = 0;
 }
 
-void loadBall(int power)
-{
-	nMotorEncoder[motorA] = 0;
-	motor[motorA] = power;
-	while (nMotorEncoder < 360){}
-	motor[motorA] = 0;
-}
-
 float returnLoadTime(int power)
 {
 	/*
@@ -69,7 +72,7 @@ float returnLoadTime(int power)
 	*/
 	time1[T1] = 0;
 	loadBall(power);
-	return time1[T1] = 0;
+	return time1[T1]*1000;
 }
 
 void testingLoading()
@@ -88,8 +91,8 @@ void testingLoading()
 int findENCShooting()
 {
 	//find correct encoder count
-	int cnt = 0; 
-	for(int i = 0, i<3; i++)
+	int cnt = 0;
+	for(int i = 0; i<3; i++)
 	{
 		cnt += modifiedShootBall(0, 5, 150, i);
 		buttonPress();
@@ -98,7 +101,7 @@ int findENCShooting()
 	return cnt/3;
 }
 
-int main()
+task main()
 {
 	testingLoading();
 	int PB = findENCShooting();

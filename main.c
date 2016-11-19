@@ -85,6 +85,5 @@ bool checkStop(bool shotsReached)
 
 task main()
 {
-
-
+	//initializesensors
 }
