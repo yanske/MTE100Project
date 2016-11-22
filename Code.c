@@ -10,7 +10,7 @@ void rotate(bool left, float time, int encoder)
 	else
 		power = -5;
 
-	if(time < 0) 							// User setting location manually
+	if(time < 0) 	// User setting location manually
 	{
 		motor[motorB] = power; 	// Need to check if this rotates left or right
 		wait1Msec(100);
@@ -19,8 +19,8 @@ void rotate(bool left, float time, int encoder)
 	else	// Randomized
 	{
 		randomTime = random[halfTime];	// Select random time between 0 and halfTime
-		time1[T1] = 0;									// Reset timer
-		motor[motorB] = power;					// Begin moving shooting mechanism
+		time1[T1] = 0;			// Reset timer
+		motor[motorB] = power;		// Begin moving shooting mechanism
 
 		while(time1[T1] < randomTime)
 		{
@@ -68,14 +68,14 @@ void setLocation(float time)
 	Shooting mechanism pointing straight = motor encoder is 0
 	*/
 
-	float encCount = 0;						// Random encoder count
-	bool turn = true; 						// assuming going left is true
+	float encCount = 0;		// Random encoder count
+	bool turn = true; 		// assuming going left is true
 
-	turn = random(1);							// Left or right? 1 = Left
-	encCount = random(45);				// Randomize encoder location
+	turn = random(1);		// Left or right? 1 = Left
+	encCount = random(45);		// Randomize encoder location
 
 	if(!turn)
-		encCount = -encCount;				// Set to negative count if turning right
+		encCount = -encCount;	// Set to negative count if turning right
 
 	rotate(turn, time, encCount);	// Send L/R, shot interval, encoder loaction
 }
