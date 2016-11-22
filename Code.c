@@ -172,5 +172,5 @@ task main()
 
 	loadBall();
 
-	//While time < interval location on flowchart
+	//While time < interval block on flowchart
 }
