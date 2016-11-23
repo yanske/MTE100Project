@@ -70,10 +70,16 @@ void setLocation(float time)
 	*/
 	
 	float encCount = 0;						// Random encoder count
-	bool turn = true; 						// assuming going left is true
+	bool turn = false;
 	
-	turn = random(1);							// Left or right? 1 = Left
-	encCount = random(45);				// Randomize encoder location
+	int firstRandom = 0, secondRandom = 0;
+	firstRandom = random(3);
+	secondRandom = random(3);
+	
+	if(firstRandom == secondRandom)
+		turn = true;
+
+	encCount = random(25);				// Randomize encoder location
 	
 	if(!turn)	
 		encCount = -encCount;				// Set to negative count if turning right
