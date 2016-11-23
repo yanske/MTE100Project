@@ -185,6 +185,60 @@ task main()
 		
 		while(nNxtButtonPressed == -1){}
 	} while(nNxtButtonPressed != 3);
+
+	eraseDisplay();
+	displayString(1, "Select # of shots:");
+	displayString(2, "-Left to -1");
+	displayString(3, "-Right to +1");
+	displayString(4, "-Hold to +-5");
+	displayString(5, "-Orange to enter");
+	displayString(6, "Total Shots: %d", totalShots);
+	
+	while(nNxtButtonPressed !=3)
+	{
+		if(nNxtButtonPressed == 1)
+		{
+			while(nNxtButtonPressed == 1)
+			{
+				timer[T2] = 0;
+				if(timer[T2] > 500)
+				{
+					totalShots+=5;
+					displayString(6, "Total Shots: %d", totalShots);
+				}
+			}
+			while(nNxtButtonPressed != 1)
+			{
+				if(timer[T2] <= 500)
+				{
+					totalShots++;
+					displayString(6, "Total Shots: %d", totalShots);
+				}
+			}	
+		}
+
+		if(nNxtButtonPressed == 2)
+		{
+			while(nNxtButtonPressed == 2)
+			{
+				timer[T2] = 0;
+				if(timer[T2] > 500)
+				{
+					totalShots-=5;
+					displayString(6, "Total Shots: %d", totalShots);
+				}
+			}
+			while(nNxtButtonPressed != 2)
+			{
+				if(timer[T2] <= 500)
+				{
+					totalShots--;
+					displayString(6, "Total Shots: %d", totalShots);
+				}
+			}	
+		}
+	}
+	while(nNxtButtonPressed == 3){};
 	
 	eraseDisplay();
 	displayString(0, "Start by");

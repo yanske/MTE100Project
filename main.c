@@ -1,11 +1,11 @@
+/*
 void setLocation(float time){ 
 
-	/*
+	
 	Assuming we already set the motor encoder 
 	i also assumed the motor encoder was set at the end of the table (so at the end it = 0)
 	assumes the table can handle 90 degrees (so 45 degrees to each side)
-	*/
-
+	
 	float encCount = 0;
 	float time = 0;
 	float timeRotate = 0;	 
@@ -42,7 +42,7 @@ bool checkBall(bool ball){
 		motor[motorA] = 0;
 	}
 }
-*/
+
 
 bool displayData(float time, int shotIndex, int total)
 {
@@ -70,7 +70,7 @@ void shootBall(float time)
 	while(nMotorEncoder[motorA]<360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
 	motor[motorA] = 0;
 }
-*/
+
 
 
 bool checkStop(bool shotsReached)
@@ -82,8 +82,19 @@ bool checkStop(bool shotsReached)
 		return false;
 }
 
-
+*/
 task main()
 {
-	//initializesensors
+	//initialize sensors
+	SensorValue[S1] = sensorSONAR;
+	SensorValue[S2] = sensorTouch;
+
+	bool random = true;
+	//output instructions
+	while(nNxtButtonPressed == -1){}
+	while(nNxtButtonPressed == 1 || nNxtButtonPressed == 2)
+	{
+		if(nNxtButtonPressed == 2)
+			random = false;
+	}
 }
