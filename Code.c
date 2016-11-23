@@ -37,8 +37,9 @@ void rotate(bool left, float time, int encoder)
 //Touch Sensor Timer Function
 float touchTimer()
 {
-	displayString(0, "Hold Touch Sensor for duration");
-	displayString(1, "of desired shot interval");
+	displayString(0, "Hold Touch Sensor");
+	displayString(1, "to set shot");
+	displayString(2, "interval");
 	
 	float recordedTime = 0;
 	
@@ -89,17 +90,21 @@ void loadBall(){
 }
 
 //=== YK Functions ==========================================
-void shootBall(float time)
+void shootBall(float time, int pullBackValue, int power)
 {
-	const int PULL_BACK = 0 //replace
-	time1[T1] = 0;
+	const int PULL_BACK = pullBackValue;
+	//time1[T1] = 0;
 	nMotorEncoder[motorA] = 0;
-	motor[motorA] = 40;
-	while(nMotorEncoder[motorA]<PULL_BACK){}
+	motor[motorA] = power;
+
+	while(nMotorEncoder[motorA]>PULL_BACK){}
 	motor[motorA] = 0;
-	while(time1[T1]<time){}
-	motor[motorA] = 40;
-	while(nMotorEncoder[motorA]<360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
+
+	//loadBall(); //edit to appropriate power
+	//while(time1[T1]< time){}
+	motor[motorA] = power;
+
+	while(nMotorEncoder[motorA]>-360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
 	motor[motorA] = 0;
 }
 
@@ -115,6 +120,7 @@ bool checkStop(bool shotsReached)
 //=== SQ Functions ======================================
 bool displayData(float time, int shotIndex, int total)
 {
+	eraseDisplay();
 	bool shotsRemaining = false;
 	displayString(1, "Frequency: 1 ball/%.2fs", time/1000);
 	displayString(2, "Balls shot: %d", shotIndex);
@@ -131,15 +137,15 @@ task main()
 	SensorType[S1] = sensorTouch;
 	SensorType[S2] = sensorSONAR;
 	float time = 0;
+	int totalShots = 0, shotsShot = 0;
 	
-	bool randomShot = true, eStop = false; //emergency stop
+	bool randomShot = true, eStop = false, ballsLeft = true; //emergency stop
 	
-	//Output Instructions
+	displayString(0, "Set Location");
+	displayString(1, "Left - Random");
+	displayString(2, "Right - Manual");
 	
 	while(nNxtButtonPressed == -1 || nNxtButtonPressed == 3 || nNxtButtonPressed == 0){}
-	
-	//displayString(0, "DJAS");
-	//wait1Msec(10000);
 	
 	//Accept number of desired shots
 	
@@ -149,46 +155,53 @@ task main()
 		while(nNxtButtonPressed != 3)
 		{
 			while(nNxtButtonPressed == -1){}
-				if(nNxtButtonPressed == 1)
-				{
-					displayString(0, "PIECE OF CRAP");
-					rotate(true, -1, 0);
-				}
-				else if(nNxtButtonPressed == 2)
-				{
-					eraseDisplay();
-					displayString(0, "EVEN MORE CRAP");
-					rotate(false, -1, 0);
-				}
+			
+			if(nNxtButtonPressed == 1)
+				rotate(false, -1, 0);
+		
+			else if(nNxtButtonPressed == 2)
+				rotate(true, -1, 0);
+		
 			while(nNxtButtonPressed == -1){}
-			displayString(0, "WHAT THE CRAP");
 		}
 		randomShot = false;
-		displayString(9, "FALSE");
-		wait1Msec(1000);
 	}
 	
-	displayString(0, "Next");
-	wait1Msec(1000);
-	
-	while(nNxtButtonPressed != 3)
+	do
 	{
 		eraseDisplay();
 		time = touchTimer();
-		displayString(1, "Press 3 to continue");
-		displayString(2, "Else press any other");
-		displayString(3, "button to reset time");
+		displayString(1, "Press 3 to go on");
+		displayString(2, "Else press any");
+		displayString(3, "other button");
+		displayString(4, "to set interval");
+		displayString(5, "again");
 		
 		while(nNxtButtonPressed == -1){}
+	} while(nNxtButtonPressed != 3);
+	
+	eraseDisplay();
+	displayString(0, "Start by");
+	displayString(1, "putting racket");
+	displayString(2, "in front of");
+	displayString(3, "sonar sensor");
+	
+	while(SensorValue[S2] > 150){}
+	
+	while(ballsLeft && eStop == false)
+	{
+		time1[T1] = 0;
+	
+		if(randomShot)
+			setLocation(time);
+		
+		loadBall();	
+		
+		while(time1[T1] < time - 200){}
+		
+		shootBall(0, -170, -60);
+		
+		eStop = displayData(time, shotsShot, totalShots);
+		eStop = checkStop(shotsShot);
 	}
-	
-	while(SensorValue[S2] > 100){}
-	time1[T1] = 0;
-	
-	if(randomShot)
-		setLocation(time);
-	
-	loadBall();	
-	
-	//While time < interval location on flowchart
 }
