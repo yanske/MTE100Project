@@ -145,7 +145,7 @@ task main()
 	float time = 0;
 	int totalShots = 0, shotsShot = 0;
 	
-	bool randomShot = true, eStop = false, ballsLeft = true; //emergency stop
+	bool randomShot = true, eStop = false; //emergency stop
 	
 	displayString(0, "Set Location");
 	displayString(1, "Left - Random");
@@ -248,7 +248,7 @@ task main()
 	
 	while(SensorValue[S2] > 150){}
 	
-	while(ballsLeft && eStop == false)
+	while(eStop == false)
 	{
 		time1[T1] = 0;
 	
@@ -260,8 +260,9 @@ task main()
 		while(time1[T1] < time - 200){}
 		
 		shootBall(0, -170, -60);
+		shotsShot++;
 		
 		eStop = displayData(time, shotsShot, totalShots);
-		eStop = checkStop(shotsShot);
+		eStop = checkStop(totalShots - shotsShot);
 	}
 }
