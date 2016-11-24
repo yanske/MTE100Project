@@ -212,7 +212,7 @@ task main()
 	displayString(1, "Select # of shots:");
 	displayString(2, "-Left to -1");
 	displayString(3, "-Right to +1");
-	displayString(4, "-Hold to +-5");
+	displayString(4, "-Hold to +5/-5");
 	displayString(5, "-Orange to enter");
 	displayString(6, "Total Shots: %d", totalShots);
 	wait1Msec(1000);
