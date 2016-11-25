@@ -57,7 +57,7 @@ float touchTimer()
 
 	eraseDisplay();
 	displayString(0, "Time Interval");
-	displayString(1, "Set: %f", recordedTime);
+	displayString(1, "Set: %f", recordedTime/1000);
 
 	return recordedTime;
 }
@@ -139,22 +139,21 @@ bool displayData(float time, int shotIndex, int total)
 }
 
 //=== Button Hold / Release Function ====================
-void buttonHold(button)
+void buttonHold(int button)
 {
-	while(nNxtButtonPressed == -1){}
-	while(nNxtButtonPressed != -1){}
+	while(nNxtButtonPressed == button){}
+	while(nNxtButtonPressed != button){}
 }
 
 //=== MAIN ==============================================
 task main()
 {
 
-	
+
 	SensorType[S1] = sensorTouch;
 	SensorType[S2] = sensorSONAR;
 	float time = 0;
 	int totalShots = 0, shotsShot = 0;
-
 	bool randomShot = true, eStop = false; //emergency stop
 
 	displayString(0, "Set Location");
@@ -168,14 +167,13 @@ task main()
 
 	if(nNxtButtonPressed == 1)
 	{
-		
 		eraseDisplay();
 		displayString(0, "Manual Set");
 		displayString(1, "Press right button");
 		displayString(2, "to rotate right");
 		displayString(3, "Press left button");
 		displayString(4, "to rotate left");
-		displayString(6, "Press orange")
+		displayString(6, "Press orange");
 		displayString(7, "button to go on");
 
 		while(nNxtButtonPressed == -1) {}
@@ -217,40 +215,43 @@ task main()
 	displayString(6, "Total Shots: %d", totalShots);
 	wait1Msec(1000);
 
-	while (nNxtButtonPressed !=3){
+	bool debounce;
+	while (nNxtButtonPressed !=3)
+	{
 		while(nNxtButtonPressed == -1){}
 		if(nNxtButtonPressed == 1)
 		{
 			time1[T2] = 0;
+			debounce = false;
 			while(nNxtButtonPressed == 1)
 			{
-
-				if(time1[T2] > 1000)
+				if(time1[T2] > 900)
 				{
+					debounce = true;
 					totalShots+=5;
 					displayString(6, "                         ");
 					displayString(6, "Total Shots: %d", totalShots);
 					time1[T2] = 0;
 				}
 			}
-
-			if(time1[T2] <= 500)
+			if(!debounce)
 			{
 				totalShots++;
 				displayString(6, "                         ");
 				displayString(6, "Total Shots: %d", totalShots);
 			}
-
 		}
 
 		else if(nNxtButtonPressed == 2)
 		{
 			time1[T2] = 0;
-		while(nNxtButtonPressed == 2)
+			debounce = false;
+			while(nNxtButtonPressed == 2)
 			{
 
-				if(time1[T2] > 1000)
+				if(time1[T2] > 900)
 				{
+					debounce = true;
 					totalShots-=5;
 					displayString(6, "                         ");
 					displayString(6, "Total Shots: %d", totalShots);
@@ -258,7 +259,7 @@ task main()
 				}
 			}
 
-			if(time1[T2] <= 500)
+			if(!debounce)
 			{
 				totalShots--;
 				displayString(6, "                         ");
@@ -296,10 +297,11 @@ task main()
 		eStop = displayData(time, shotsShot, totalShots);
 		eStop = checkStop(totalShots-shotsShot);
 	}
-
+	displayString(4, "Press any button");
+	displayString(5, "to end program");
 	while(nNxtButtonPressed == -1){}   //Let user see displayData stuff
+	while(nNxtButtonPressed != -1){}
 	eraseDisplay();
-	displayString(0, "Press any button");
-	displayString(1, "to end program");
+
 	}
 }
