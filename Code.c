@@ -162,7 +162,6 @@ task main()
 	displayString(6, "to set manually");
 
 	while(nNxtButtonPressed == -1 || nNxtButtonPressed == 3 || nNxtButtonPressed == 0){}
-	while(nNxtButtonPressed != -1){}
 	
 	if(nNxtButtonPressed == 1)
 	{
