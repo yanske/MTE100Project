@@ -294,7 +294,7 @@ task main()
 	displayString(2, "in front of");
 	displayString(3, "sonar sensor");
 
-	while(SensorValue[S2] > 150){}
+	while(SensorValue[S2] > 100){}
 
 	if(totalShots-shotsShot){
 
