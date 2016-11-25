@@ -91,7 +91,7 @@ void setLocation(float time)
 
 void loadBall(){
 	nMotorEncoder[motorC] = 0;
-	while (nMotorEncoder[motorC] > -360)
+	while (nMotorEncoder[motorC] > -355)
 		motor[motorC] = -50;
 	motor[motorC] = 0;
 }
@@ -125,31 +125,29 @@ bool checkStop(bool shotsLeft)
 }
 
 //=== SQ Functions ======================================
-bool displayData(float time, int shotIndex, int total)
+void displayData(float time, int shotIndex, int total)
 {
 	eraseDisplay();
 	bool shotsRemaining = false;
 	displayString(1, "Frequency: 1 ball/%.2fs", time/1000);
 	displayString(2, "Balls shot: %d", shotIndex);
 	displayString(3, "Remaining shots: %d", total - shotIndex);
-	if(total - shotIndex > 0)
-		shotsRemaining = true;
+	//if(total - shotIndex > 0)
+		//shotsRemaining = true;
 
-	return shotsRemaining;
+	//return shotsRemaining;
 }
 
 //=== Button Hold / Release Function ====================
-void buttonHold(int button)
+void buttonHold()
 {
-	while(nNxtButtonPressed == button){}
-	while(nNxtButtonPressed != button){}
+	while(nNxtButtonPressed == -1){}
+	while(nNxtButtonPressed != -1){}
 }
 
 //=== MAIN ==============================================
 task main()
 {
-
-
 	SensorType[S1] = sensorTouch;
 	SensorType[S2] = sensorSONAR;
 	float time = 0;
@@ -164,7 +162,8 @@ task main()
 	displayString(6, "to set manually");
 
 	while(nNxtButtonPressed == -1 || nNxtButtonPressed == 3 || nNxtButtonPressed == 0){}
-
+	while(nNxtButtonPressed != -1){}
+	
 	if(nNxtButtonPressed == 1)
 	{
 		eraseDisplay();
@@ -176,11 +175,13 @@ task main()
 		displayString(6, "Press orange");
 		displayString(7, "button to go on");
 
-		while(nNxtButtonPressed == -1) {}
-
+		//while(nNxtButtonPressed == -1) {}
+		buttonHold();
+	
 		while(nNxtButtonPressed != 3)
 		{
-			while(nNxtButtonPressed == -1){}
+			//while(nNxtButtonPressed == -1){}
+			buttonHold();
 
 			if(nNxtButtonPressed == 1)
 				rotate(false, -1, 0);
@@ -188,7 +189,8 @@ task main()
 			else if(nNxtButtonPressed == 2)
 				rotate(true, -1, 0);
 
-			while(nNxtButtonPressed == -1){}
+			//while(nNxtButtonPressed == -1){}
+			buttonHold();
 		}
 		randomShot = false;
 	}
@@ -203,7 +205,8 @@ task main()
 		displayString(6, "other button");
 		displayString(7, "to reset interval");
 
-		while(nNxtButtonPressed == -1){}
+		//while(nNxtButtonPressed == -1){}
+		buttonHold();
 	} while(nNxtButtonPressed != 3);
 
 	eraseDisplay();
@@ -268,7 +271,8 @@ task main()
 
 		}
 	}
-	while(nNxtButtonPressed == 3){};
+	
+	while(nNxtButtonPressed == 3){}; // <--- What's this for??
 
 	eraseDisplay();
 	displayString(0, "Start by");
@@ -294,14 +298,14 @@ task main()
 		shootBall(0, -170, -60);
 		shotsShot++;
 
-		eStop = displayData(time, shotsShot, totalShots);
+		//eStop = displayData(time, shotsShot, totalShots);
+		displayData(time, shotsShot, totalShots);
 		eStop = checkStop(totalShots-shotsShot);
 	}
+		
 	displayString(4, "Press any button");
 	displayString(5, "to end program");
-	while(nNxtButtonPressed == -1){}   //Let user see displayData stuff
-	while(nNxtButtonPressed != -1){}
+	buttonHold(); 	//Let user see displayData stuff
 	eraseDisplay();
-
 	}
 }
