@@ -91,8 +91,8 @@ void setLocation(float time)
 
 void loadBall(){
 	nMotorEncoder[motorC] = 0;
-	while (nMotorEncoder[motorC] > -355)
-		motor[motorC] = -50;
+	while (nMotorEncoder[motorC] > -341)
+		motor[motorC] = -40;
 	motor[motorC] = 0;
 }
 
@@ -124,6 +124,59 @@ bool checkStop(bool shotsLeft)
 		return false;
 }
 
+void buttonHold(bool right, int & totalShots)
+{
+		time1[T2] = 0;
+		bool debounce = false;
+		int buttonValue=1;
+		if(!right)
+		{
+			buttonValue =2;
+		}
+		while(nNxtButtonPressed == buttonValue)
+		{
+			if(time1[T2] > 900)
+			{
+				debounce = true;
+				if(right)
+				{
+					totalShots+=5;
+				}
+				else
+				{
+					totalShots-=5;
+				}
+
+				if(totalShots < 0)
+				{
+					totalShots =0;
+				}
+
+				displayString(6, "                         ");
+				displayString(6, "Total Shots: %d", totalShots);
+				time1[T2] = 0;
+			}
+		}
+		if(!debounce)
+		{
+				if(right)
+				{
+					totalShots++;
+				}
+				else
+				{
+					totalShots--;
+				}
+
+				if(totalShots<0)
+				{
+					totalShots = 0;
+				}
+			displayString(6, "                         ");
+			displayString(6, "Total Shots: %d", totalShots);
+		}
+}
+
 //=== SQ Functions ======================================
 void displayData(float time, int shotIndex, int total)
 {
@@ -131,8 +184,7 @@ void displayData(float time, int shotIndex, int total)
 	bool shotsRemaining = false;
 	displayString(1, "Frequency: 1 ball/%.2fs", time/1000);
 	displayString(2, "Balls shot: %d", shotIndex);
-	displayString(3, "Remaining");
-	displayString(4, "shots:  %d", total - shotIndex);
+	displayString(3, "Remaining shots: %d", total - shotIndex);
 	//if(total - shotIndex > 0)
 		//shotsRemaining = true;
 
@@ -163,7 +215,7 @@ task main()
 	displayString(6, "to set manually");
 
 	while(nNxtButtonPressed == -1 || nNxtButtonPressed == 3 || nNxtButtonPressed == 0){}
-	
+
 	if(nNxtButtonPressed == 1)
 	{
 		eraseDisplay();
@@ -174,9 +226,9 @@ task main()
 		displayString(4, "to rotate left");
 		displayString(6, "Press orange");
 		displayString(7, "button to go on");
-		
+
 		while(nNxtButtonPressed != -1){}
-	
+
 		while(nNxtButtonPressed != 3)
 		{
 			while(nNxtButtonPressed == -1){}
@@ -193,7 +245,7 @@ task main()
 		}
 		randomShot = false;
 	}
-	
+
 	while(nNxtButtonPressed != -1){}
 
 	do
@@ -208,9 +260,9 @@ task main()
 
 		while(nNxtButtonPressed == -1){}
 	} while(nNxtButtonPressed != 3);
-	
+
 	while(nNxtButtonPressed != -1){}
-	
+
 	eraseDisplay();
 	displayString(1, "Select # of shots:");
 	displayString(2, "-Left to -1");
@@ -220,60 +272,20 @@ task main()
 	displayString(6, "Total Shots: %d", totalShots);
 	wait1Msec(1000);
 
-	bool debounce;
 	while (nNxtButtonPressed !=3)
 	{
 		while(nNxtButtonPressed == -1){}
 		if(nNxtButtonPressed == 1)
 		{
-			time1[T2] = 0;
-			debounce = false;
-			while(nNxtButtonPressed == 1)
-			{
-				if(time1[T2] > 900)
-				{
-					debounce = true;
-					totalShots+=5;
-					displayString(6, "                         ");
-					displayString(6, "Total Shots: %d", totalShots);
-					time1[T2] = 0;
-				}
-			}
-			if(!debounce)
-			{
-				totalShots++;
-				displayString(6, "                         ");
-				displayString(6, "Total Shots: %d", totalShots);
-			}
+			buttonHold(true, totalShots);
 		}
 
 		else if(nNxtButtonPressed == 2)
 		{
-			time1[T2] = 0;
-			debounce = false;
-			while(nNxtButtonPressed == 2)
-			{
-
-				if(time1[T2] > 900)
-				{
-					debounce = true;
-					totalShots-=5;
-					displayString(6, "                         ");
-					displayString(6, "Total Shots: %d", totalShots);
-					time1[T2] = 0;
-				}
-			}
-
-			if(!debounce)
-			{
-				totalShots--;
-				displayString(6, "                         ");
-				displayString(6, "Total Shots: %d", totalShots);
-			}
-
+			buttonHold(false,totalShots);
 		}
 	}
-	
+
 	while(nNxtButtonPressed == 3){}; // <--- What's this for??
 
 	eraseDisplay();
@@ -304,9 +316,9 @@ task main()
 		displayData(time, shotsShot, totalShots);
 		eStop = checkStop(totalShots-shotsShot);
 	}
-		
-	displayString(5, "Press any button");
-	displayString(6, "to end program");
+
+	displayString(4, "Press any button");
+	displayString(5, "to end program");
 	buttonHold(); 	//Let user see displayData stuff
 	eraseDisplay();
 	}
