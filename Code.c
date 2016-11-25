@@ -25,9 +25,9 @@ void rotate(bool left, float time, int encoder)
 		while(time1[T1] < randomTime)
 		{
 		if(left)
-			while(nMotorEncoder[motorB] < encoder && encoder < 25){}
+			while(nMotorEncoder[motorB] < encoder){}
 		else
-			while(nMotorEncoder[motorB] > encoder && encoder > 25){}
+			while(nMotorEncoder[motorB] > encoder){}
 		}
 	}
 
