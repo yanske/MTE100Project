@@ -180,8 +180,8 @@ task main()
 	
 		while(nNxtButtonPressed != 3)
 		{
-			//while(nNxtButtonPressed == -1){}
-			buttonHold();
+			while(nNxtButtonPressed == -1){}
+			//buttonHold();
 
 			if(nNxtButtonPressed == 1)
 				rotate(false, -1, 0);
