@@ -205,10 +205,11 @@ task main()
 		displayString(6, "other button");
 		displayString(7, "to reset interval");
 
-		//while(nNxtButtonPressed == -1){}
-		buttonHold();
+		while(nNxtButtonPressed == -1){}
 	} while(nNxtButtonPressed != 3);
-
+	
+	while(nNxtButtonPressed != -1){}
+	
 	eraseDisplay();
 	displayString(1, "Select # of shots:");
 	displayString(2, "-Left to -1");
