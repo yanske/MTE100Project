@@ -92,7 +92,7 @@ void setLocation(float time)
 void loadBall(){
 	nMotorEncoder[motorC] = 0;
 	while (nMotorEncoder[motorC] > -341)
-		motor[motorC] = -40;
+		motor[motorC] = -42;
 	motor[motorC] = 0;
 }
 
@@ -111,7 +111,7 @@ void shootBall(float time, int pullBackValue, int power)
 	//while(time1[T1]< time){}
 	motor[motorA] = power;
 
-	while(nMotorEncoder[motorA]>-360){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
+	while(nMotorEncoder[motorA]>-380){}  //test to see if there is a margine of error and a loop to set it to 360 is needed
 	motor[motorA] = 0;
 }
 
@@ -181,7 +181,7 @@ void buttonHold(bool right, int & totalShots)
 void displayData(float time, int shotIndex, int total)
 {
 	eraseDisplay();
-	bool shotsRemaining = false;
+	//bool shotsRemaining = false;
 	displayString(1, "Frequency: 1 ball/%.2fs", time/1000);
 	displayString(2, "Balls shot: %d", shotIndex);
 	displayString(3, "Remaining shots: %d", total - shotIndex);
