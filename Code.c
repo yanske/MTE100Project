@@ -131,7 +131,8 @@ void displayData(float time, int shotIndex, int total)
 	bool shotsRemaining = false;
 	displayString(1, "Frequency: 1 ball/%.2fs", time/1000);
 	displayString(2, "Balls shot: %d", shotIndex);
-	displayString(3, "Remaining shots: %d", total - shotIndex);
+	displayString(3, "Remaining");
+	displayString(4, "shots:  %d", total - shotIndex);
 	//if(total - shotIndex > 0)
 		//shotsRemaining = true;
 
@@ -304,8 +305,8 @@ task main()
 		eStop = checkStop(totalShots-shotsShot);
 	}
 		
-	displayString(4, "Press any button");
-	displayString(5, "to end program");
+	displayString(5, "Press any button");
+	displayString(6, "to end program");
 	buttonHold(); 	//Let user see displayData stuff
 	eraseDisplay();
 	}
