@@ -173,6 +173,8 @@ task main()
 		displayString(4, "to rotate left");
 		displayString(6, "Press orange");
 		displayString(7, "button to go on");
+		
+		while(nNxtButtonPressed != -1){}
 	
 		while(nNxtButtonPressed != 3)
 		{
