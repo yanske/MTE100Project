@@ -175,8 +175,8 @@ task main()
 		displayString(6, "Press orange");
 		displayString(7, "button to go on");
 
-		//while(nNxtButtonPressed == -1) {}
-		buttonHold();
+		while(nNxtButtonPressed == -1) {}
+		//buttonHold();
 	
 		while(nNxtButtonPressed != 3)
 		{
@@ -189,11 +189,13 @@ task main()
 			else if(nNxtButtonPressed == 2)
 				rotate(true, -1, 0);
 
-			//while(nNxtButtonPressed == -1){}
-			buttonHold();
+			while(nNxtButtonPressed == -1){}
+			//buttonHold();
 		}
 		randomShot = false;
 	}
+	
+	while(nNxtButtonPressed != -1){}
 
 	do
 	{
