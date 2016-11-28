@@ -1,4 +1,4 @@
-//=== JC Functions =======================================
+//=== JC Functions ======================================= i forgot to push...
 void rotate(bool left, float time, int encoder)
 {
 	float halfTime = time / 2, randomTime = 0;
