@@ -310,7 +310,7 @@ task main()
 
 		displayString(4, "Press any button");
 		displayString(5, "to end program");
-		buttonHold(); 	//Let user see displayData stuff
+		buttonHold(); 	//Let user see displayData data
 		eraseDisplay();
 	}
 }
