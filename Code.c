@@ -118,8 +118,7 @@ bool checkStop(bool shotsLeft)
 	const int MAX_RANGE = 100;			// Max range to trigger sonar sensor
 	if(SensorValue[S2] < MAX_RANGE || !shotsLeft)	// If object in front of sensor or no more shots left
 		return true; //ie stop
-	else
-		return false;
+	return false;
 }
 
 //=== Button Held Down for Desired Shots Function - Written by Yan Song Ke ==============
@@ -156,7 +155,7 @@ void buttonHold(bool right, int & totalShots)
 				time1[T2] = 0;
 			}
 		}
-		if(!debounce)
+		if(!debounce)				//ensures that if held for slightly more than the set interval, it doesn't also in/de-crement by 1
 		{
 				if(right)
 				{
