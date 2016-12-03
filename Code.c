@@ -1,4 +1,4 @@
-//=== Rotate Function - Written by Jonathan Chung ==============
+//=== Rotate Function - Written by Jonathan Chung =============
 void rotate(bool left, float time, int encoder)
 {
 	float halfTime = time / 2, randomTime = 0;
